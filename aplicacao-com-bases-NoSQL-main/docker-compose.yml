@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: meu_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # --- NOVO SERVIÇO: Interface Web ---
+  mongo-express:
+    image: mongo-express
+    container_name: minha_interface_mongo
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ""
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ""
+      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
+      ME_CONFIG_BASICAUTH: "false" # Desativa senha pra facilitar o teste
+    depends_on:
+      - mongodb
+
+  app:
+    build: ./app
+    container_name: meu_dashboard
+    ports:
+      - "8501:8501"
+    depends_on:
+      - mongodb
+    volumes:
+      - ./app:/app
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/
+
+volumes:
+  mongo_data:
