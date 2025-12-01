@@ -9,7 +9,6 @@ services:
     volumes:
       - mongo_data:/data/db
 
-  # --- NOVO SERVIÇO: Interface Web ---
   mongo-express:
     image: mongo-express
     container_name: minha_interface_mongo
@@ -20,7 +19,7 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: ""
       ME_CONFIG_MONGODB_ADMINPASSWORD: ""
       ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
-      ME_CONFIG_BASICAUTH: "false" # Desativa senha pra facilitar o teste
+      ME_CONFIG_BASICAUTH: "false"
     depends_on:
       - mongodb
 
@@ -38,3 +37,4 @@ services:
 
 volumes:
   mongo_data:
+
